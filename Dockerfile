@@ -1,10 +1,10 @@
 FROM jupyterhub/jupyterhub:1.0
 
-RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y tzdata=2019c-0ubuntu0.18.04 iputils-ping && ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime && dpkg-reconfigure -f noninteractive tzdata
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt install -y tzdata=2019c-0ubuntu0.18.04 iputils-ping curl && ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime && dpkg-reconfigure -f noninteractive tzdata
 
-RUN /opt/conda/bin/pip install oauthenticator==0.8.2 psycopg2-binary==2.8.2
+RUN /opt/conda/bin/pip install oauthenticator==0.9.0 psycopg2-binary==2.8.2
 
-RUN /opt/conda/bin/pip install -e git+https://github.com/jupyter-jsc/JupyterHub-extended.git@1.0.0#egg=jupyter4jsc
+RUN /opt/conda/bin/pip install -e git+https://github.com/jupyter-jsc/JupyterHub-extended.git@integration#egg=jupyter4jsc
 
 RUN adduser --disabled-password --gecos '' jupyter
 
