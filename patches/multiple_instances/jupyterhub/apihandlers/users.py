@@ -613,12 +613,22 @@ class SpawnProgressAPIHandler(APIHandler):
         else:
             # what happened? Maybe spawn failed?
             f = spawn_future
-            if f and f.done() and f.exception():
-                failed_event['message'] = "Spawn failed: %s" % f.exception()
-            else:
-                self.log.warning(
-                    "Server %s didn't start for unknown reason", spawner._log_name
-                )
+            try:
+                if f and f.done() and f.exception():
+                    failed_event['message'] = "Spawn failed: %s" % f.exception()
+                elif spawner.error_message != "":
+                    failed_event['message'] = "Spawn failed: %s" % spawner.error_message
+                    self.log.info(
+                        "Server %s didn't start for known reason: %s", spawner._log_name, spawner.error_message
+                    )
+                else:
+                    failed_event['message'] = "Spawn failed for unknown reason. An administrator is informed."
+                    self.log.warning(
+                        "Server %s didn't start for unknown reason", spawner._log_name
+                    )
+            except:
+                failed_event['message'] = "Spawn failed for unknown reason. An administrator is informed."
+                self.log.exception("Could not check for error message")
             await self.send_event(failed_event)
 
 

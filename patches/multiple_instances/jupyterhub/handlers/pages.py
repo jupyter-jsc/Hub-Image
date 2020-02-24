@@ -350,7 +350,7 @@ class AdminHandler(BaseHandler):
     """Render the admin page."""
 
     @admin_only
-    def get(self):
+    async def get(self):
         available = {'name', 'admin', 'running', 'last_activity'}
         default_sort = ['admin', 'name']
         mapping = {'running': orm.Spawner.server_id}
@@ -393,6 +393,8 @@ class AdminHandler(BaseHandler):
 
         users = self.db.query(orm.User).outerjoin(orm.Spawner).order_by(*ordered)
         users = [self._user_from_orm(u) for u in users]
+        for u in users:
+            await u.authenticator.update_mem(u, "AdminHandler")
         from itertools import chain
 
         running = []
