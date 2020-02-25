@@ -1,6 +1,6 @@
 FROM 10.0.24.10:50000/jupyter4jsc/j4j_hub_base:1.0
 
-RUN /opt/conda/bin/pip install -e git+https://github.com/jupyter-jsc/JupyterHub-extended.git@integration#egg=jupyter4jsc
+RUN /opt/conda/bin/pip install -e git+https://github.com/jupyter-jsc/JupyterHub-extended.git#egg=jupyter4jsc
 
 RUN adduser --disabled-password --gecos '' jupyter
 
