@@ -820,7 +820,7 @@ class BaseHandler(RequestHandler):
             await spawn_future
             toc = IOLoop.current().time()
             self.log.info(
-                "action=startresult username=%s - User %s took %.3f seconds to start", user.name, user_server_name, toc - tic
+                "action=success - username=%s - User %s took %.3f seconds to start", user.name, user_server_name, toc - tic
             )
             self.statsd.timing('spawner.success', (toc - tic) * 1000)
             RUNNING_SERVERS.inc()
